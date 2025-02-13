@@ -12,26 +12,91 @@
    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="head">Hello World</div>
+    <div class="head">
+      <h1>Tony's Tasks</h1>
+    </div>
     <div class="board"></div>
     <div class="column" id="todo">
       <h2>Todo</h2>
       <hr />
-    </div>
+      <div class="task-in-btn">
+        <input type="text" id="taskInput" class="task-input" placeholder="input task..." oninput="console.log('capitalize')">
+        <butt class="add-task-btn" onclick="console.log('add task please');">
+          add task
+        </butt>
+      </div>
+      <div class="task-container" 
+           ondrop="console.log('ondrop')" 
+           ondragover="console.log('ondragover')">
+
+      </div>
+      </div>
     <div class="column" id="in-progress">
       <h2>In-Progress</h2>
       <hr />
+      <div class="task-container" 
+           ondrop="console.log('ondrop')" 
+           ondragover="console.log('ondragover')">
+      
+      </div>
     </div>
     <div class="column" id="done">
       <h2>Done</h2>
       <hr />
+      <div class="task-container" 
+           ondrop="console.log('ondrop')" 
+           ondragover="console.log('ondragover')">
+      
+      </div>
     </div>
+    <script>
+      // 1. Get items from local storage key of 'tasks'
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      // 2. Now in event 'DOMContentLoaded' we will need to render the tasks on the board
+      document.addEventListener('DOMContentLoaded', renderTasks);
+
+      function renderTasks() {
+        const columns =  ['todo', 'in-progress', 'done'];
+        columns.forEach(columnId => {
+          const column = document.getElementById(columnId);
+          // console.log('column =', column);
+
+          // 3.1 First we will need to clear the tasks from the board
+          column.querySelector(".task-container").innerHTML = "";
+
+          // 3.2 then we will loop through the tasks and add them to the board
+          tasks.forEach((columnId) => {
+            if(task.status === columnId) {
+              console.log('handle todo item');
+            }
+          });
+        });
+      } 
+
+      // create task element function
+      function createTaskElement(content, id) {
+        const taskId = id;
+        const task = document.createElement('div');
+        task.id = taskId;
+        task.className = 'task';
+        task.draggable = true;
+        task.innerHTML = `
+          ${content}
+          <span class="delete-btn" onclick="console.log('delete task!!')" >   
+            ❌         
+          </span>
+        `;
+        return task;
+      }
+
+      // Add task function
+      // - { id: "task-" + Date.now(), content: taskContent, status: columnId }
+
+
+      
+    </script>
 </body>
 </html>
 
 
 
-<!-- div -->
-<!-- h1 - h6, p -->
-<!-- img -->
-<!-- button -->
