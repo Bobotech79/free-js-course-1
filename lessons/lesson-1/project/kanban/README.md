@@ -69,7 +69,7 @@ if none before we will need to create an empty array
 
 4. createTaskElement function to create the task element [ x ]
 
-5. make function to delete task
+5. make function to delete task   
 
 
 6. function allow drop[ x]

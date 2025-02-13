@@ -20,10 +20,15 @@
       <h2>Todo</h2>
       <hr />
       <div class="task-in-btn">
-        <input type="text" id="taskInput" class="task-input" placeholder="input task..." oninput="console.log('capitalize')">
-        <butt class="add-task-btn" onclick="console.log('add task please');">
+        <input type="text" 
+        id="taskInput" 
+        class="task-input" 
+        placeholder="input task..." 
+        oninput="console.log('capitalize')"
+        />
+        <button class="add-task-btn" onclick="addTask('todo')">
           add task
-        </butt>
+        </button>
       </div>
       <div class="task-container" 
            ondrop="console.log('ondrop')" 
@@ -55,25 +60,26 @@
       // 2. Now in event 'DOMContentLoaded' we will need to render the tasks on the board
       document.addEventListener('DOMContentLoaded', renderTasks);
 
-      function renderTasks() {
+      function renderTasks() {        
         const columns =  ['todo', 'in-progress', 'done'];
         columns.forEach(columnId => {
-          const column = document.getElementById(columnId);
-          // console.log('column =', column);
+          const column = document.getElementById(columnId);          
 
           // 3.1 First we will need to clear the tasks from the board
           column.querySelector(".task-container").innerHTML = "";
 
           // 3.2 then we will loop through the tasks and add them to the board
-          tasks.forEach((columnId) => {
-            if(task.status === columnId) {
-              console.log('handle todo item');
+          tasks.forEach((task) => {
+            if(task.status === columnId) {              
+              const taskElement = createTaskElement(task.content, task.id);
+              column.querySelector(".task-container").appendChild(taskElement);
             }
           });
         });
-      } 
+      }
 
-      // create task element function
+      //------------------------------------------------------//
+      // Create task element function
       function createTaskElement(content, id) {
         const taskId = id;
         const task = document.createElement('div');
@@ -82,18 +88,44 @@
         task.draggable = true;
         task.innerHTML = `
           ${content}
-          <span class="delete-btn" onclick="console.log('delete task!!')" >   
+          <span class="delete-btn" onclick="deleteTask('${taskId}')" >   
             ❌         
           </span>
         `;
         return task;
       }
 
+      // Make function to delete task.
+      function deleteTask(taskId) {
+        console.log('taskId', taskId);
+      }
+
+      //------------------------------------------------------//
+
       // Add task function
       // - { id: "task-" + Date.now(), content: taskContent, status: columnId }
+      function addTask(columnId) {
+        const taskInput = document.getElementById('taskInput');
+        const taskContent = taskInput.value.trim();
+        if (taskContent !== "") {
+          const newTask = {
+            id: "task-" + Date.now(),
+            content: taskContent,
+            status: columnId,
+          };
+          tasks.push(newTask);
+          // update localStorage
+          updateLocalStorage();
+          renderTasks();
+          taskInput.value = "";
+        }
+      }
+
+      function updateLocalStorage() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
 
 
-      
     </script>
 </body>
 </html>
