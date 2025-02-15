@@ -1,8 +1,13 @@
 import express from 'express';
+import path from 'path';
 
 const PORT = 8888; // app is going to run on this port. 
 
 const app = express(); // instantiating express app here.
+
+const publicDirectoryPath = path.join('public');
+
+app.use(express.static(publicDirectoryPath));
 
 /**
  *  @description simple endpoint /ping for health check
