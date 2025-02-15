@@ -1,132 +1,44 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <!-- Roboto Font -->
-  <link rel="stylesheet" 
-  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-  />
-  <!-- Link styles.css -->
-   <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kanban Board</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
 </head>
+
 <body>
-    <div class="head">
-      <h1>Tony's Tasks</h1>
-    </div>
-    <div class="board"></div>
-    <div class="column" id="todo">
+  <div class="head">
+    <h1>Kanban Board</h1>
+  </div>
+  <div class="board">
+    <div class="column" id="todo" ondrop="drop(event, 'todo')" ondragover="allowDrop(event)">
       <h2>Todo</h2>
       <hr />
-      <div class="task-in-btn">
-        <input type="text" 
-        id="taskInput" 
-        class="task-input" 
-        placeholder="input task..." 
-        oninput="console.log('capitalize')"
-        />
+      <div class="tasks-in-btn">
+        <input type="text" id="taskInput" class="task-input" placeholder="Enter a task..."
+          oninput="capitalizeInput(this)" />
         <button class="add-task-btn" onclick="addTask('todo')">
-          add task
+          Add Task
         </button>
       </div>
-      <div class="task-container" 
-           ondrop="console.log('ondrop')" 
-           ondragover="console.log('ondragover')">
-
-      </div>
-      </div>
-    <div class="column" id="in-progress">
-      <h2>In-Progress</h2>
-      <hr />
-      <div class="task-container" 
-           ondrop="console.log('ondrop')" 
-           ondragover="console.log('ondragover')">
-      
-      </div>
+      <div class="task-container"></div>
     </div>
-    <div class="column" id="done">
+
+    <div class="column" id="in-progress" ondrop="drop(event, 'in-progress')" ondragover="allowDrop(event)">
+      <h2>In Progress</h2>
+      <hr />
+      <div class="task-container"></div>
+    </div>
+    <div class="column" id="done" ondrop="drop(event, 'done')" ondragover="allowDrop(event)">
       <h2>Done</h2>
       <hr />
-      <div class="task-container" 
-           ondrop="console.log('ondrop')" 
-           ondragover="console.log('ondragover')">
-      
-      </div>
+      <div class="task-container"></div>
     </div>
-    <script>
-      // 1. Get items from local storage key of 'tasks'
-      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-      // 2. Now in event 'DOMContentLoaded' we will need to render the tasks on the board
-      document.addEventListener('DOMContentLoaded', renderTasks);
+  </div>
 
-      function renderTasks() {        
-        const columns =  ['todo', 'in-progress', 'done'];
-        columns.forEach(columnId => {
-          const column = document.getElementById(columnId);          
-
-          // 3.1 First we will need to clear the tasks from the board
-          column.querySelector(".task-container").innerHTML = "";
-
-          // 3.2 then we will loop through the tasks and add them to the board
-          tasks.forEach((task) => {
-            if(task.status === columnId) {              
-              const taskElement = createTaskElement(task.content, task.id);
-              column.querySelector(".task-container").appendChild(taskElement);
-            }
-          });
-        });
-      }
-
-      //------------------------------------------------------//
-      // Create task element function
-      function createTaskElement(content, id) {
-        const taskId = id;
-        const task = document.createElement('div');
-        task.id = taskId;
-        task.className = 'task';
-        task.draggable = true;
-        task.innerHTML = `
-          ${content}
-          <span class="delete-btn" onclick="deleteTask('${taskId}')" >   
-            ❌         
-          </span>
-        `;
-        return task;
-      }
-
-      // Make function to delete task.
-      function deleteTask(taskId) {
-        console.log('taskId', taskId);
-      }
-
-      //------------------------------------------------------//
-
-      // Add task function
-      // - { id: "task-" + Date.now(), content: taskContent, status: columnId }
-      function addTask(columnId) {
-        const taskInput = document.getElementById('taskInput');
-        const taskContent = taskInput.value.trim();
-        if (taskContent !== "") {
-          const newTask = {
-            id: "task-" + Date.now(),
-            content: taskContent,
-            status: columnId,
-          };
-          tasks.push(newTask);
-          // update localStorage
-          updateLocalStorage();
-          renderTasks();
-          taskInput.value = "";
-        }
-      }
-
-      function updateLocalStorage() {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-      }
-
-
-    </script>
+  <script src="script.js"></script>
+    
 </body>
 </html>
 
