@@ -1,29 +1,22 @@
 # simple express server
 
-```
-this will be a simpel web server
--> will be able to server static files
--> will be able to handle http requests
-```
+This will be a simple web server.
+-> Will be able to server static files
+-> Will be able to handle http requests
+...
 
 ## init project
-
     npm init -y
 
 ## run project
-
-    npm install
     npm run start
 
-## packages
-
+## package
     - nodemon
     - express
 
 ### nodemon
-
     npm i nodemon -D
 
-### express
-
+### express 
     npm i express
