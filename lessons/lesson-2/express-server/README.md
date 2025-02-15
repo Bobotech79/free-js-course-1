@@ -20,3 +20,6 @@ This will be a simple web server.
 
 ### express 
     npm i express
+
+### path
+    npm i path
