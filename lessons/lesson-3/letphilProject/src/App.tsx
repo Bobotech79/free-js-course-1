@@ -14,7 +14,7 @@ const randomUsersApi = axios.create({
 const App = () => {
   const [count, setCount] = useState<number>(10);
 
-  const getRendomUsers = async () => {
+  const getRandomUsers = async () => {
     const res: AxiosResponse = await randomUsersApi.get('/', {
       params: {
         results: count,
@@ -35,7 +35,7 @@ const App = () => {
           value={count}
           onChange={(e) => setCount(Number(e.target.value))}
         />
-        <button onClick={getRendomUsers}>get</button>
+        <button onClick={getRandomUsers}>get</button>
       </span>
 
       <h2>count: {count}</h2>
