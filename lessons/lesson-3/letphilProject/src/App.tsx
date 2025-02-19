@@ -1,22 +1,47 @@
-//import { useEffect } from "react";
-import * as React from "react";
+import { useEffect, useState } from "react";
+import axios, {AxiosResponse} from "axios";
 
-const { useEffect } = React;
-export default function App() {
+const RANDOM_USER_EP = "https://randomuser.me/api";
 
-  const makeRequest = async () => {
-    const res = await fetch("https://randomuser.me/api?results=10");
-    const json = await res.json();
-    console.log(json);
+//axios.defaults.baseURL = RANDOM_USER_EP;
+const randomUsersApi = axios.create({
+  baseURL: RANDOM_USER_EP,
+  headers: {
+    'Content-Type': "application/json"
   }
+})
 
-  useEffect(() => {
-    makeRequest();
-  });
+const App = () => {
+  const [count, setCount] = useState<number>(10);
 
+  const getRendomUsers = async () => {
+    const res: AxiosResponse = await randomUsersApi.get('/', {
+      params: {
+        results: count,
+      },
+    });    
+    // const { data: { results } } = res
+    // console.log('results =', results);
+    const randomUsersResults = res.data?.results ?? [];
+    console.log("randomUsersResults =", randomUsersResults);
+  }
+  
   return (
     <div>
-      <h1>HELLO WORLD</h1>
-    </div >
+      {/* This will control how many random users get from random users api */}
+      <span>
+        <input
+          type="number"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        />
+        <button onClick={getRendomUsers}>get</button>
+      </span>
+
+      <h2>count: {count}</h2>
+      <h1>Hello World!</h1>
+    </div>
   );
-}
+};
+
+export default App;

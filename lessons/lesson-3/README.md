@@ -1,11 +1,11 @@
 ## RANDOM_USER exercise
 
 ```
-1. hit random user api with parmeter results - 10 < dynamic> [x]
+1. hit random user api with parameter results - 10 < dynamic> [x]
 
 2. show results on ui [x]
 
-3. set state of randomusers array [x]
+3. set state of random users array [x]
 
 4. make RandomUserCard [x]
 
