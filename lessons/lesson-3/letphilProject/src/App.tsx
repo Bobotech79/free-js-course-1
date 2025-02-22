@@ -12,19 +12,29 @@ const randomUsersApi = axios.create({
 })
 
 const App = () => {
+  // state variable here
   const [count, setCount] = useState<number>(10);
+  const [results, setResults] = useState<unknown[]>([]);
 
+  useEffect(() => {
+    getRandomUsers();
+  }), [];
+  
+  // handlers
   const getRandomUsers = async () => {
+    // making request here.
     const res: AxiosResponse = await randomUsersApi.get('/', {
       params: {
         results: count,
       },
-    });    
-    // const { data: { results } } = res
-    // console.log('results =', results);
+    });
+    // picking off the results key from the response
     const randomUsersResults = res.data?.results ?? [];
-    console.log("randomUsersResults =", randomUsersResults);
-  }
+
+    // adding on the new results ( random users array ) to the previous results
+    setResults([...results, ...randomUsersResults]);
+    setCount(10);
+  };
   
   return (
     <div>
@@ -37,11 +47,65 @@ const App = () => {
         />
         <button onClick={getRandomUsers}>get</button>
       </span>
+      <p>results: {results.length}</p>
+      {/* <pre>{results.length !== 0 && JSON.stringify(results, null, 2)}</pre> */}
+      <div className="random-users-container">
 
-      <h2>count: {count}</h2>
-      <h1>Hello World!</h1>
+      </div>
+      {results.length !== 0 && (
+        results.map((result: any, index: number) => {
+          return (
+            <div key={`random-user-card-${index}-${result.email}`} style={{
+              borderWidth: 1,
+              borderStyle: "solid",
+              borderColor: 'black'
+            }}>
+              {JSON.stringify(result, null, 2)}
+            </div>
+          )
+        })
+      )}
     </div>
   );
+};
+
+type ContactInfo = {
+  email: string // email
+  cell: string  // cell
+};
+
+//type Gender = 'male' | 'female' | 'trans' | 'not-answered'
+
+interface IRandomUserCard {
+  gender: string   // gender
+  fullName: string // name.title + name.first + name.last
+  address: string  // location.street.number + location.street.name, location.city + location.state + location.country
+  email: string
+  age: number // dob.age
+  contactInfo: ContactInfo
+  picture: string // picture.medium
+};
+
+const RandomUserCard = ({
+  gender,
+  fullName,
+  address,
+  email,
+  age,
+  contactInfo,
+  picture
+}: IRandomUserCard) => {
+  return (
+    <div>
+      <p>{gender}</p>
+      <p>{fullName}</p>
+      <p>{address}</p>
+      <p>{email}</p>
+      <p>{age}</p>
+      <p>{JSON.stringify(contactInfo)}</p>
+      <p>{picture}</p>
+    </div>
+  )
 };
 
 export default App;
